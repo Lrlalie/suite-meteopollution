@@ -104,7 +104,7 @@ imports{CitiesComponent} from './cities/cities.component';(automatically generat
 declarations:[MeteoPollutionComponent,CityComponent,CitiesComponent]
 in imports:[CommonModule, SharedModule], exports:[MeteoPollutionComponent],
 ```
-### module shared
+### Creation module shared
 let's create a shared <strong>module</strong> (where we could find necessary tools for modules and components)
 ```
 npm run ng generate module shared (automatically : the system creates a shared.module.ts)
