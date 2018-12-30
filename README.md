@@ -265,7 +265,20 @@ this.city.name=reponse['address']['city'];},);
 }
 }
 ```
-#### Environment.ts //A REPRENDRE ICI
+#### Environment.ts
+(path : src/environments/environment.ts)
+add (under text automatically generated)
+```
+export const locationIQ ={
+key:----write your key----
+};
+```
+#### in location-iq-service.ts, add:
+import {HttpClient} from '@angular/common/http';
+import{locationIQ} from './../../../../environments/environment';
+
+
+
 
 #### in location-iq-models.ts
 ```
