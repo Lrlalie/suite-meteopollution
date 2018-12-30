@@ -96,7 +96,7 @@ and Let's create the <strong>sub-component</strong> meteo-pollution/cities
 ```
 npm run ng generate component meteo-pollution/cities
 ```
-#### in meteo-pollution.module.ts add:
+### in meteo-pollution.module.ts add:
 ```
 import{MeteoPollutionComponent} from './meteo-pollution.component';(automatically generated)
 imports{CityComponent} from './city/city.component';(automatically generated)
@@ -109,7 +109,7 @@ let's create a shared <strong>module</strong> (where we could find necessary too
 ```
 npm run ng generate module shared (automatically : the system creates a shared.module.ts)
 ```
-### sub-module material (in shared module)
+#### in shared.module.ts : create a sub-module material 
 then in this module shared a <strong>sub-module</strong> material
 ```
 npm run ng generate module shared/material (automatically : the system creates a material.module.ts)
@@ -117,17 +117,10 @@ npm run ng generate module shared/material (automatically : the system creates a
 #### In shared.module.ts : add
 ```
 imports:[CommonModule, MaterialModule,FlexLayoutModule],
-exports:[MaterialModule, FlexLayoutModule ],
+exports:[MaterialModule, FlexLayoutModule],
 import{MaterialModule} from './material/material.module';(automatically generated)
 ```
-#### In meteo-pollution.module.ts add 
-```
-declarations:[MeteoPollutionComonent],
-imports:[CommonModule,SharedModule],
-exports:[MeteoPollutionComponent]
-```
-
-### in material.module.ts add
+#### in material.module.ts add
 ```
 imports:[CommonModule,MatButtonModule,MatToolBarModule,MatIconModule],
 exports:[MatButtonModule,MatToolBarModule,MatIconModule]
@@ -138,7 +131,7 @@ import{MatIconModule} from '@angular/material/icon';(automatically generated)
 ```
 
 ## OTHER COMPONENTS
-### CHOOSE YOUR BUTTON
+### CHOOSE YOUR BUTTON more details on icons, buttons
 https://material.angular.io/components/categories :on this site, get the reference of the API.
 to find the link : in the left menu, clic on
 ```
@@ -147,8 +140,9 @@ button
 then clic on 
 ```
 api's tab
-``` 
-(This link will create a button) copy the following link in material.module.ts (in imports and exports)
+```
+#### in material.module.ts
+(This link will create a button) copy the following link (in imports and exports)
 ```
 import {MatButtonModule} from '@angular/material/button';
 imports:[CommonModule, MatButtonModule],exports:[MatButtonModule]
@@ -165,21 +159,18 @@ and select a form to your button, for example : <strong>icon</strong>. Then clic
 <>
 ```
 you will reach codes, search for the Icon Buttons and select a part of code, for instance : 
+copy-paste this code
+#### in meteo-pollution.component.html 
 ```
 <button mat-icon-button>
 <mat-icon>menu</mat-icon>
 </button>
 ```
-copy-paste this code in meteo-pollution.component.html 
-
-### Models and city.model.ts
-in Shared (path : app/shared)
-Handly, create a folder names Models, and in Models, create a file names city.model.ts
-in cities.model.ts
+### in shared : creation folder : Models and in Models create file :city.model.ts
 ```
 export class City{
 public name:string;
-public position: number;
+public position: Position;
 }
 ```
 #### in meteo-pollution.component.ts: add
@@ -204,44 +195,10 @@ this.city = new City();
 </mat-toolbar-row>
 </mat-toolbar>
 ```
-#### in city.component.ts : add
-under export class ...
-```
-public city: string;
-constructor(){
-this.city="Lyon"; //ici cela nous servira de test à corriger par la suite
-}
-ngOnInit(){
-<mat-icon aria-label="loc_off">location_off</mat-icon>
-<span>{{city}}</span> //double {{ ou ${
-}
-```
 ### HTTPREQUEST : création d'un service (path : meteo-pollution/shared/services/location-iq)
 Pour pouvoir réutiliser cette fonction dans plusieurs modules c'est poruquoi on crèe un service
 ```
 npm run ng generate service meteo-pollution/shared/services/location-iq
-```
-#### in city.component.ts : add
-in export class : 
-```
-export class CityComponent implements OnInit{
-@Input() city:City; // the city's name becomes dynamic
-constructor(private LocationIQService : LocationIqService){
-this.FindLocation();
-}
-
-//ne pas modifier la suite pour le moment
-ngOnInit(){
-<mat-icon aria-label="loc_off">location_off</mat-icon>
-<span>{{city}}</span> //double {{ ou ${
-}
-```
-#### in shared.module.ts add 
-```
-declarations: [],
-imports: [CommonModule,MaterialModule,FlexLayoutModule],
-exports [MaterialModule,FlexLayoutModule],
-import{FlexLayoutModule} from'@angular/flex-layout';
 ```
 #### in city.component.html
 ```
@@ -250,8 +207,7 @@ import{FlexLayoutModule} from'@angular/flex-layout';
 </mat-icon>location_on</mat-icon>
 </ng-template>
 ```
-Here, if there is no city, the icon will be : location_off, else location_on.
-it is the geolocation that allows to locate the city
+Here, The geolocation locates the city, if there is no city, the icon will be : location_off, else location_on.
 
 #### in city.component.ts : add
 ```
@@ -284,15 +240,15 @@ this.city.name=reponse['address']['city'];},);
 }
 }
 ```
-#### Environment.ts
-(path : src/environments/environment.ts)
-add (under text automatically generated)
+#### Environment.ts (path : src/environments/environment.ts)
+under text automatically generated, add
 ```
 export const locationIQ ={
 key:----write your key----
 };
 ```
-#### in location-iq-service.ts, add:
+The key should be obtained in the locationIQ site.
+#### in shared/services/location-iq-service.ts, add:
 ```
 import {HttpClient} from '@angular/common/http';
 import{locationIQ} from './../../../../environments/environment';
@@ -303,7 +259,10 @@ return
 this.http.get('https://eu1.locationiq.com/v1/reverse.php,key=${locationIQ.key}&lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json');
 }
 }
-  ```
+ ```
+#### in shared /models : create location-iq-model.ts
+Right clic/new file/location-iq-model.ts
+In this model, create an export class LocationIQ
 
 #### in location-iq-models.ts
 ```
@@ -312,10 +271,6 @@ export class LocationIQ{
 address:Address;
 }
 ```
-#### in shared /models
-Right clic/new file/location-iq-model.ts
-Create an export class LocationIQ
-
 #### in shared/models
 Right clic/new file/address.model.ts
 Export class Address{
@@ -342,7 +297,7 @@ origin of this class: on the https://locationiq.com site, go down to the bottom 
 We obtain json data, which are going to be simplified and typed in string (because all data in json are embed with double quotes, so it is string.
 We keep the data that interests us : City, county, country and postcode.
 
-#### in location-iq-service.ts, add:
+#### in shared/services/location-iq-service.ts, change the observable's type:
 ```
 …
 get(position:Position):Observable<LocationIQ>{
@@ -371,7 +326,7 @@ import{MatSnackBar} from '@angular/material/snack-bar';
 import{Subscription} from 'rxjs';
 import{LocationIQ} from ‘src/app/shared/models/location-iq.model’;
 import{HttpErrorResponse} from ‘@angular/common/http';
-import{LocationIQ} from ‘src/environments/environment’;
+import{locationIQ} from ‘src/environments/environment’;//this is the key
 
 @Component({
 Selector :’mp-city’,
@@ -421,7 +376,29 @@ declarations: [],
 imports: [CommonModule,MaterialModule,HttpClientModule,FlexLayoutModule],
 exports [MaterialModule,HttpClientModule,FlexLayoutModule],
 ```
- 
+#### meteo-pollution.component.ts
+```
+import {Component} from '@angular/core';
+import {CityComponent} from './city/city.component';
+import {City} from '../shared/models/city.model';
+import {log} from 'util';
+
+@Component({
+selector:'mp-meteo-pollution',
+templateUrl: './meteo-pollution.component.html';
+styleUrls:['./meteo-pollution.component.scss']
+})
+
+export class MeteoPollutionComponent{
+public city:city;
+constructor(){
+this.city = new city;
+}
+addCity(city:City){
+console.log("wait");
+}
+}
+```
 
 
 
