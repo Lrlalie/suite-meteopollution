@@ -27,11 +27,11 @@ npm install tslint
 begin Application in VSCode
 we added a prefix to our application meteopollution : mp
 verify if mp-root is:
-- in index.html 
+### in index.html 
 ```
 <body><mp-root></mp-root></body>
 ```
-- and in AppComponent.ts
+### in AppComponent.ts
 ```
 selector: 'mp-root',
 ``` 
@@ -42,30 +42,25 @@ first sub-component (in VSCODE console):
 ```
 npm run ng generate component meteo-pollution
 ```
-we will find this new sub-component under app
-in meteo-pollution component:
 
-in meteo-pollution component.ts:
+### in meteo-pollution component (path :app/meteo-pollution.component)
+#### in meteo-pollution component.ts:
 ```
 selector: 'mp-meteo-pollution',
 ```
-in meteo-pollution component.html:
+#### in meteo-pollution component.html:
 ```
 delete all and write : 
 <mp-meteo-pollution></mp-meteo-pollution>
 ```
-### module meteo-pollution
-Now let's create a <strong>module</strong> meteo-pollution:
+### Creation: module meteo-pollution
 ```
 npm run ng generate module meteo-pollution
 ```
-in meteo-pollution.module.ts : 
+### in meteo-pollution.module.ts : add
 ```
-we will add a declarations : [MeteoPollutionComponent] (not in the imports)
-```
-automatically the system generates an import at the top of the page:
-```
-import{MeteoPollutionComponent} from './meteo-pollution.component';
+declarations : [MeteoPollutionComponent] (not in the imports)
+import{MeteoPollutionComponent} from './meteo-pollution.component';(automatically generated)
 ```
 ### app.module
 in app.module.ts:
@@ -74,15 +69,20 @@ delete the declaration: MeteoPollutionComponent
 ```
 I suppose that its place is in the meteo-pollution.module.ts, and it can be declared only once, then
 ```
-add MeteoPollutionModule in the imports
-```
 The import{MeteoPollutionModule} from './meteo-pollution/meteo-pollution-module';
 It is automatically generated at the top of the page.
+add MeteoPollutionModule in the imports
+```
 
 If this component should be used outside its module, it should be exported (else : nullPointerException), so 
 in meteo-pollution.module.ts
 ```
 exports:[MeteoPollutionComponent],
+```
+### display our application
+#### in app.component.html
+```
+<mp-meteo-pollution> </mp-meteo-pollution> 
 ```
 ### sub-component city (path : app/meteo-pollution)
 Let's create the <strong>sub-component</strong> meteo-pollution/city
@@ -95,13 +95,14 @@ and Let's create the <strong>sub-component</strong> meteo-pollution/cities
 ```
 npm run ng generate component meteo-pollution/cities
 ```
-
 #### in meteo-pollution.module.ts add:
 ```
 (automatically the imports are generated at the top of the page)
 import{MeteoPollutionComponent} from './meteo-pollution.component';
 imports{CityComponent} from './city/city.component';
-declarations:[MeteoPollutionComponent,CityComponent]
+imports{CitiesComponent} from './cities/cities.component';
+
+declarations:[MeteoPollutionComponent,CityComponent,CitiesComponent]
 in imports:[CommonModule, SharedModule], exports:[MeteoPollutionComponent],
 ```
 ### module shared
@@ -114,17 +115,29 @@ then in this module shared a <strong>sub-module</strong> material
 ```
 npm run ng generate module shared/material (automatically : the system creates a material.module.ts)
 ```
-In shared.module.ts : imports and exports : MaterialModule
+#### In shared.module.ts : add
 ```
 imports:[CommonModule, MaterialModule,FlexLayoutModule],
 exports:[MaterialModule, FlexLayoutModule ],
+import{MaterialModule} from './material/material.module';(automatically generated)
 ```
-automatically : the import is generated at the top of the page : import{MaterialModule} from './material/material.module';
+#### In meteo-pollution.module.ts add 
+```
+declarations:[MeteoPollutionComonent],
+imports:[CommonModule,SharedModule],
+exports:[MeteoPollutionComponent]
+```
 
-In meteo-pollution.module.ts add the import of SharedModule
+### in material.module.ts add
 ```
-declarations:[MeteoPollutionComonent], imports:[CommonModule,SharedModule], exports:[MeteoPollutionComponent]
+imports:[CommonModule,MatButtonModule,MatToolBarModule,MatIconModule],
+exports:[MatButtonModule,MatToolBarModule,MatIconModule]
+import{CommonModule} from '@angular/common';(automatically generated)
+import{MatButtonModule} from '@angular/material/button';(automatically generated)
+import{MatToolBarModule} from '@angular/materail/toolbar';(automatically generated)
+import{MatIconModule} from '@angular/material/icon';(automatically generated)
 ```
+
 ## OTHER COMPONENTS
 ### CHOOSE YOUR BUTTON
 https://material.angular.io/components/categories :on this site, get the reference of the API.
@@ -224,12 +237,12 @@ ngOnInit(){
 <span>{{city}}</span> //double {{ ou ${
 }
 ```
-#### in shared.module.ts add import of HttpClientModule 
+#### in shared.module.ts add 
 ```
-import {httpClientModule} from '@angular/common/http';
 declarations: [],
-imports: [CommonModule,MaterialModule,HttpClientModule,FlexLayoutModule],
-exports [MaterialModule,HttpClientModule,FlexLayoutModule],
+imports: [CommonModule,MaterialModule,FlexLayoutModule],
+exports [MaterialModule,FlexLayoutModule],
+import{FlexLayoutModule} from'@angular/flex-layout';
 ```
 #### in city.component.html
 ```
@@ -367,7 +380,7 @@ templateUrl :’./city.component.html’
 styleUrls: [‘./city.component.scss]
 })
 export class CityComponent{
-@Input()city : City;
+@Input()city : City; //kind of inheritance parent =>child
 localizeMe=false;
 @output() onCity:EventEmitter<City>;
 
@@ -375,6 +388,8 @@ constructor(private locationIQService:LocationIqService, private snack:MatSnackB
 this.findLocation();
 this.onCity = new EventEmitter;
 }
+
+//creation function called above
 findLocation(){
 navigator.geolocation.getCurrentPosition(
 (event:position)=>{
@@ -386,6 +401,8 @@ this.findCityName();
 "Retry").onAction().subscribe(()=>this.findLocation())
 );
 }
+
+//creation function called above
 findCityName():Subscription{
 return this.locationIQService.get(this.city.position).subscribe((locationIQ: LocationIQ)=>{
 this.city.address = locationIQ.address;
@@ -398,7 +415,13 @@ this.onCity.emit(this.city);
 }
 
 ```
-
+#### in shared.module.ts add import of HttpClientModule 
+```
+import {httpClientModule} from '@angular/common/http';
+declarations: [],
+imports: [CommonModule,MaterialModule,HttpClientModule,FlexLayoutModule],
+exports [MaterialModule,HttpClientModule,FlexLayoutModule],
+```
  
 
 
