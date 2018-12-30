@@ -74,8 +74,9 @@ It is automatically generated at the top of the page.
 add MeteoPollutionModule in the imports
 ```
 
-If this component should be used outside its module, it should be exported (else : nullPointerException), so 
-in meteo-pollution.module.ts
+If this component should be used outside its module, it should be exported (else : nullPointerException), so
+
+### in meteo-pollution.module.ts
 ```
 exports:[MeteoPollutionComponent],
 ```
