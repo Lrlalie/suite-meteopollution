@@ -89,7 +89,14 @@ Let's create the <strong>sub-component</strong> meteo-pollution/city
 ```
 npm run ng generate component meteo-pollution/city
 ```
-in meteo-pollution.module.ts add:
+
+### sub-component city 
+and Let's create the <strong>sub-component</strong> meteo-pollution/cities
+```
+npm run ng generate component meteo-pollution/cities
+```
+
+#### in meteo-pollution.module.ts add:
 ```
 (automatically the imports are generated at the top of the page)
 import{MeteoPollutionComponent} from './meteo-pollution.component';
@@ -293,6 +300,108 @@ export class LocationIQ{
 address:Address;
 }
 ```
+#### in shared /models
+Right clic/new file/location-iq-model.ts
+Create an export class LocationIQ
+
+#### in shared/models
+Right clic/new file/address.model.ts
+Export class Address{
+County:string;
+State:string;
+Postcode:string;
+Country:string;
+}
+
+origin of this class: on the https://locationiq.com site, go down to the bottom of the first page, select the reverse insert, click on lookup, then on json output. Data is obtained in json format. We choose address and we copy the content.
+
+"address": {
+        "house_number": "362",
+        "road": "5th Avenue",
+        "suburb": "Midtown South",
+        "city_district": "Manhattan",
+        "city": "New York City",
+        "county": "New York County",
+        "state": "New York",
+        "postcode": "10001",
+        "country": "USA",
+        "country_code": "us"
+    },	
+We obtain json data, which are going to be simplified and typed in string (because all data in json are embed with double quotes, so it is string.
+We keep the data that interests us : City, county, country and postcode.
+
+#### in location-iq-service.ts, add:
+```
+…
+get(position:Position):Observable<LocationIQ>{
+…
+```
+All service’s method return an “Observable”. 
+Other example : getCurrentPosition
+
+#### in meteo-pollution.component.html
+```
+<mat-toolbar color ="primary">
+<mat-toolbar-row>
+<button mat-icon-button>
+<mat-icon aria-label="menu">menu</mat-icon> //aria label non impératif
+</button>
+<mp-city (onCity)=”addCity($event)”[city] = "city"></mp-city>
+</mat-toolbar-row>
+</mat-toolbar>
+```
+#### in City.component.ts
+```
+import{Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import{City} from 'src/app/shared/models/city.model';
+import{LocationIqService} from '../shared/services/location-iq.service';
+import{MatSnackBar} from '@angular/material/snack-bar';
+import{Subscription} from 'rxjs';
+import{LocationIQ} from ‘src/app/shared/models/location-iq.model’;
+import{HttpErrorResponse} from ‘@angular/common/http';
+import{LocationIQ} from ‘src/environments/environment’;
+
+@Component({
+Selector :’mp-city’,
+templateUrl :’./city.component.html’
+styleUrls: [‘./city.component.scss]
+})
+export class CityComponent{
+@Input()city : City;
+localizeMe=false;
+@output() onCity:EventEmitter<City>;
+
+constructor(private locationIQService:LocationIqService, private snack:MatSnackBar){
+this.findLocation();
+this.onCity = new EventEmitter;
+}
+findLocation(){
+navigator.geolocation.getCurrentPosition(
+(event:position)=>{
+this.city.position=event;
+this.findCityName();
+},
+(event:PositionError)=>this.snack.open(
+"Geolocation Error",
+"Retry").onAction().subscribe(()=>this.findLocation())
+);
+}
+findCityName():Subscription{
+return this.locationIQService.get(this.city.position).subscribe((locationIQ: LocationIQ)=>{
+this.city.address = locationIQ.address;
+this.onCity.emit(this.city);
+},
+(error:HttpErrorResponse)=> this.snack.open(
+“City location Error”,
+“Retry”).onAction().subscribe(() =>this.findCityName())
+}
+}
+
+```
+
+ 
+
+
 
 
 
