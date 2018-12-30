@@ -224,7 +224,56 @@ declarations: [],
 imports: [CommonModule,MaterialModule,HttpClientModule,FlexLayoutModule],
 exports [MaterialModule,HttpClientModule,FlexLayoutModule],
 ```
+#### in city.component.html
+```
+<mat-icon *ngIf ="!city || !city.position; else search">location_off</mat-icon> //Since the end of Angular4 :using else
+<ng-template #search>
+</mat-icon>location_on</mat-icon>
+</ng-template>
+```
+Here, if there is no city, the icon will be : location_off, else location_on.
+it is the geolocation that allows to locate the city
 
+#### in city.component.ts : add
+```
+import{Component, OnInit, Input} from '@angular/core';
+import{City} from 'src/app/shared/models/city.model';
+import{LocationIqService} from '../shared/services/location-iq.service';
+import{MatSnackBar} from '@angular/material/snack-bar';
+...
+export class CityComponent implements OnInit{
+@Input()city : City;
+localizeMe=false;
+...
+constructor(private locationIQService:LocationIqService, private snack:MatSnackBar){
+this.findLocation();
+}
+findLocation(){
+navigator.geolocation.getCurrentPosition(
+(event:position)=>{
+this.city.position=event;
+this.findCityName(event);
+},
+(event:PositionError)=>this.snack.open(
+"Geolocation Error",
+"Retry").onAction().subscribe(()=>this.findLocation())
+);
+}
+findCityName(event.Position){
+this.localizeMe=true;
+this.city.name=reponse['address']['city'];},);
+}
+}
+```
+#### Environment.ts //A REPRENDRE ICI
+
+#### in location-iq-models.ts
+```
+import{Address} from './address.model';
+export class LocationIQ{
+address:Address;
+}
+```
 
 
 
