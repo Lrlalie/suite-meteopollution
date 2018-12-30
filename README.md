@@ -90,7 +90,7 @@ Let's create the <strong>sub-component</strong> meteo-pollution/city
 npm run ng generate component meteo-pollution/city
 ```
 
-### sub-component city 
+### sub-component cities
 and Let's create the <strong>sub-component</strong> meteo-pollution/cities
 ```
 npm run ng generate component meteo-pollution/cities
