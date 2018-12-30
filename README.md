@@ -271,7 +271,10 @@ export class LocationIQ{
 address:Address;
 }
 ```
-#### in shared/models
+#### in location-iq-service.ts
+A COMPLETER ?????
+
+#### in shared/models : address.model.ts
 Right clic/new file/address.model.ts
 Export class Address{
 County:string;
@@ -280,6 +283,42 @@ Postcode:string;
 Country:string;
 }
 
+origin of this class: on the https://locationiq.com site, go down to the bottom of the first page, select the reverse insert, click on lookup, then on json output. Data is obtained in json format. We choose address and we copy the content.
+
+"address": {
+        "house_number": "362",
+        "road": "5th Avenue",
+        "suburb": "Midtown South",
+        "city_district": "Manhattan",
+        "city": "New York City",
+        "county": "New York County",
+        "state": "New York",
+        "postcode": "10001",
+        "country": "USA",
+        "country_code": "us"
+    },	
+We obtain json data, which are going to be simplified and typed in string (because all data in json are embed with double quotes, so it is string.
+We keep the data that interests us : City, county, country and postcode.
+
+##### in city.model.ts 
+```
+import{Address} from './address.model'; //there is a cluster mention ???
+export class City{
+position: Position;
+address: Address; 
+}
+
+```
+#### in shared/models : let's create a file : address.model.ts
+Right clic/new file/address.model.ts
+```
+Export class Address{
+County:string;
+State:string;
+Postcode:string;
+Country:string;
+}
+```
 origin of this class: on the https://locationiq.com site, go down to the bottom of the first page, select the reverse insert, click on lookup, then on json output. Data is obtained in json format. We choose address and we copy the content.
 
 "address": {
@@ -358,7 +397,7 @@ this.findCityName();
 
 //creation function called above
 findCityName():Subscription{
-return this.locationIQService.get(this.city.position).subscribe((locationIQ: LocationIQ)=>{
+return this.locationIQService.get(this.city.position).subscribe((locationIQ,LocationIQ);{
 this.city.address = locationIQ.address;
 this.onCity.emit(this.city);
 },
