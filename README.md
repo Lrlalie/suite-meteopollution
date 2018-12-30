@@ -98,11 +98,9 @@ npm run ng generate component meteo-pollution/cities
 ```
 #### in meteo-pollution.module.ts add:
 ```
-(automatically the imports are generated at the top of the page)
-import{MeteoPollutionComponent} from './meteo-pollution.component';
-imports{CityComponent} from './city/city.component';
-imports{CitiesComponent} from './cities/cities.component';
-
+import{MeteoPollutionComponent} from './meteo-pollution.component';(automatically generated)
+imports{CityComponent} from './city/city.component';(automatically generated)
+imports{CitiesComponent} from './cities/cities.component';(automatically generated)
 declarations:[MeteoPollutionComponent,CityComponent,CitiesComponent]
 in imports:[CommonModule, SharedModule], exports:[MeteoPollutionComponent],
 ```
