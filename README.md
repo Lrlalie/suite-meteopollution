@@ -274,11 +274,17 @@ key:----write your key----
 };
 ```
 #### in location-iq-service.ts, add:
+```
 import {HttpClient} from '@angular/common/http';
 import{locationIQ} from './../../../../environments/environment';
-
-
-
+...
+constructor(private http:HttpClient){ 
+get(position:Position):Observable<any>{
+return
+this.http.get('https://eu1.locationiq.com/v1/reverse.php,key=${locationIQ.key}&lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json');
+}
+}
+  ```
 
 #### in location-iq-models.ts
 ```
