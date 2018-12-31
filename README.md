@@ -397,7 +397,7 @@ this.findCityName();
 
 //creation function called above
 findCityName():Subscription{
-return this.locationIQService.get(this.city.position).subscribe((locationIQ,LocationIQ);{
+return this.locationIQService.get(this.city.position).subscribe((locationIQ : LocationIQ)=>{
 this.city.address = locationIQ.address;
 this.onCity.emit(this.city);
 },
@@ -438,8 +438,18 @@ console.log("wait");
 }
 }
 ```
-
-
+## let's create the meteo and pollution components : 
+### in app.component.html
+#### sub-component meteo (path : app/meteo-pollution)
+Let's create the <strong>sub-component</strong> meteo-pollution/meteo
+```
+npm run ng generate component meteo-pollution/meteo
+```
+#### sub-component pollution (path : app/meteo-pollution)
+Let's create the <strong>sub-component</strong> meteo-pollution/pollution
+```
+npm run ng generate component meteo-pollution/pollution
+```
 
 
 
