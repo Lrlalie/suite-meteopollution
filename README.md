@@ -386,9 +386,9 @@ import{HttpErrorResponse} from ‘@angular/common/http';
 import{locationIQ} from ‘src/environments/environment’;//this is the key
 
 @Component({
-Selector :’mp-city’,
-templateUrl :’./city.component.html’
-styleUrls: [‘./city.component.scss]
+Selector :'mp-city',
+templateUrl :'./city.component.html'
+styleUrls: ['./city.component.scss']
 })
 export class CityComponent{
 @Input()city : City; //kind of inheritance parent =>child
@@ -422,6 +422,7 @@ this.onCity.emit(this.city);
 (error:HttpErrorResponse)=> this.snack.open(
 “City location Error”,
 “Retry”).onAction().subscribe(() =>this.findCityName())
+);
 }
 }
 
