@@ -272,6 +272,7 @@ address:Address;
 }
 ```
 #### in location-iq-service.ts
+```
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { locationIQ } from './../../../../environments/environment';
@@ -296,7 +297,7 @@ export class LocationIqService {
     }
   
 }
-
+```
 
 #### in shared/models : address.model.ts
 Right clic/new file/address.model.ts
