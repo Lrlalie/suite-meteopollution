@@ -261,6 +261,10 @@ address:Address;
 }
 ```
 #### in location-iq-service.ts
+let's create the location-iq-service.ts : 
+```
+npm run ng generate service meteo-pollution/shared/services/location-iq
+```
 ```
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
