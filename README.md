@@ -1,7 +1,7 @@
 
 # setting-up-Angular7-meteopollution the following
 
-beforehand begin the angular's installation : create a folder with a neutral name (for example : MyAngularFolder), and open the gitbash console 
+beforehand begin the angular's installation : create a folder with a neutral name (for example : MyAngularFolder), and open the gitbash console (for instance : in desktop folder)
 from this folder to install angular/cli.
 
 ## begin installation with Cyril's README
