@@ -4,6 +4,8 @@
 beforehand begin the angular's installation : create a folder with a neutral name (for example : MyAngularFolder), and open the gitbash console (for instance : in desktop folder)
 from this folder to install angular/cli.
 
+On Browsers : localhost:4200/
+
 ## begin installation with Cyril's README
 
 1) ENOENT ERROR : with Cyril we noticed that it could appear an error with npm : ENOENT ERROR : package.json missing: 
